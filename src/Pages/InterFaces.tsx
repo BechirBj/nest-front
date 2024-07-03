@@ -92,6 +92,7 @@ const InterFaces = () => {
             <th className="py-2 px-4 border-b border-gray-200">ID</th>
               <th className="py-2 px-4 border-b border-gray-200">Title</th>
               <th className="py-2 px-4 border-b border-gray-200">CreationDate</th>
+              <th className="py-2 px-4 border-b border-gray-200">Content</th>
               <th className="py-2 px-4 border-b border-gray-200">Owner</th>
             </tr>
           </thead>
@@ -101,6 +102,7 @@ const InterFaces = () => {
                 <td className="py-2 px-4 border-b border-gray-200">{user.id}</td>
                 <td className="py-2 px-4 border-b border-gray-200">{user.title}</td>
                 <td className="py-2 px-4 border-b border-gray-200">{user.CreationDate}</td>
+                <td className="py-2 px-4 border-b border-gray-200">{user.content}</td>
                 <td className="py-2 px-4 border-b border-gray-200">{user.owner.username}</td>
               </tr>
             ))}
