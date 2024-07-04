@@ -2,6 +2,7 @@ import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from './logo.png';
 import { useAuth } from '../../Routes/AuthContext';
+import APIS from '../../API/endPoints';
 
 const Header: React.FC = () => {
   const { isAuthenticated, userRole, logout } = useAuth();
@@ -18,7 +19,7 @@ const Header: React.FC = () => {
     if (token && roles) {
       try {
         const parsedRoles = JSON.parse(roles);
-        if (parsedRoles.includes('admin')) {
+        if (parsedRoles.includes(APIS.USER_ROLE)) {
           navigate('/UsersPage');
         } else {
           alert('Access Denied: You do not have permission to view this page.');
@@ -50,7 +51,7 @@ const Header: React.FC = () => {
           <div className="flex items-center lg:order-2">
             {isAuthenticated ? (
               <>
-                {userRole === 'admin' && (
+                {userRole === APIS.USER_ROLE && (
                   <Link to="/UsersPage" className="text-gray-800 dark:text-white hover:bg-gray-50 focus:ring-4 focus:ring-gray-300 font-medium rounded-lg text-sm px-4 lg:px-5 py-2 lg:py-2.5 mr-2 dark:hover:bg-gray-700 focus:outline-none dark:focus:ring-gray-800">
                     Users
                   </Link>

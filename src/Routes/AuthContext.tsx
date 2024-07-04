@@ -5,7 +5,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   userRole: string | null;
   login: (role: string) => void;
-  logout: () => void; // Added logout function
+  logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -22,7 +22,6 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     setIsAuthenticated(false);
     setUserRole(null);
-    // Optionally clear any other user-related data or tokens from localStorage
   };
 
   return (

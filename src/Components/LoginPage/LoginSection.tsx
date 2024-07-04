@@ -14,17 +14,18 @@ const LoginSection: React.FC = () => {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const form = { email, password };
-    console.log('Form Data:', form)
     
     try {
       const response = await api.post(APIS.LOGIN, form);
-      console.log('API Response:', response);
       if (response.status === 201) {
         const { access_token, roles ,sub} = response.data;
         localStorage.setItem('token', access_token); 
         localStorage.setItem('sub', sub);
+        localStorage.setItem('role', roles);
+        console.log(roles)
+        console.log(sub)
         login(roles);
-        navigate(roles === 'admin' ? '/UsersPage' : '/');
+        navigate(roles === APIS.USER_ROLE ? '/UsersPage' : '/');
       }
     } catch (error) {
       console.error('Error during login:', error);

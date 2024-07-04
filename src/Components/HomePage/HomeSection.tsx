@@ -16,9 +16,6 @@ const HomeSection = () => {
           console.error('Error parsing JSON:', error);
           (document.getElementById('typescript-output') as HTMLInputElement).value = 'Error parsing JSON. Please check the input.';
         }
-
-
-
     }
       
       function generateTypeScript(data: any): string {
@@ -42,7 +39,6 @@ const HomeSection = () => {
             }
           }
         }
-      
         function generateTypeScriptType(value: any): string {
           switch (typeof value) {
             case 'string':
@@ -98,9 +94,7 @@ const HomeSection = () => {
       const form = {
           title: title,
           content: content,
-      };
-      console.log('Form data:', form);
-  
+      };  
       try {
           const response = await api.post(APIS.CREATE_INTERFACE, form, {
               headers: {

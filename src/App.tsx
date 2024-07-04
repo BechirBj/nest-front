@@ -1,4 +1,3 @@
-// App.tsx
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import HomePage from './Pages/HomePage';
@@ -9,6 +8,7 @@ import UsersPage from './Pages/UsersPage';
 import { AuthProvider } from './Routes/AuthContext';
 import ProtectedRoute from './Routes/ProtectedRoute';
 import InterFaces from './Pages/InterFaces';
+import APIS from './API/endPoints';
 
 const App: React.FC = () => {
   return (
@@ -20,7 +20,7 @@ const App: React.FC = () => {
           <Route path="/LoginPage" element={<LoginPage />} />
           <Route path="/Interfaces" element={<InterFaces />} />
           <Route path="/RegisterPage" element={<RegisterPage />} />
-          <Route path="/UsersPage" element={<ProtectedRoute roles="admin"><UsersPage /></ProtectedRoute>} />
+          <Route path="/UsersPage" element={<ProtectedRoute roles={APIS.USER_ROLE}><UsersPage /></ProtectedRoute>} />
         </Routes>
       </BrowserRouter>
     </AuthProvider>

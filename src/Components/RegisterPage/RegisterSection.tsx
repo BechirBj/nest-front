@@ -12,7 +12,6 @@ const RegisterSection = () => {
     const [data,setData]= useState('')
     const navigate = useNavigate();
 
-
     const handleSubmit = async (event: { preventDefault: () => void }) => {
       event.preventDefault();
       const form = {
@@ -20,16 +19,14 @@ const RegisterSection = () => {
         password: password,
         username: username,
         country: country,
-        roles: roles
+        roles: "user"
       };
-      console.log(form)
       try {
         await api.post(APIS.REGISTER, form).then((response) => {
-          if (response.status === 201) { // Check for status 201 for successful registration
+          if (response.status === 201) { 
             setData(response.data);
-            navigate('/LoginPage'); // Navigate to homepage after successful registration
+            navigate('/LoginPage'); 
           } else {
-            // Handle other cases if needed
           }
         });
       } catch (error) {
@@ -77,21 +74,7 @@ const RegisterSection = () => {
                 placeholder="Country"
               />
             </div>
-            <div className="mb-4">
-              <span className="block text-gray-700 text-sm font-bold mb-2">Role</span>
-              <div className="flex items-center">
-                <input
-                  className="mr-2 leading-tight"
-                  type="radio"
-                  id="user"
-                  name="roles"
-                  value="user"
-                  checked={roles === 'user'}
-                  onChange={(e) => setRole(e.target.value)}
-                />
-                <label className="text-gray-700" htmlFor="user">User</label>
-              </div>
-            </div>
+
             <div className="mb-6">
               <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="password">
                 Password

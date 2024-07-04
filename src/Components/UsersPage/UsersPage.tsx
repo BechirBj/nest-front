@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import api from '../../API/api';
 import APIS from '../../API/endPoints';
+import { RiDeleteBin6Line } from "react-icons/ri";
+import { IconContext } from 'react-icons';
+
 
 interface User {
-  id: number;
+  id: string;
   username: string;
   email: string;
   country: string;
@@ -14,8 +17,7 @@ interface User {
 const UsersPage: React.FC = () => {
     const [users, setUsers] = useState<User[]>([]);
     const [error, setError] = useState<string | null>(null);
-
-
+    const [id, setId] = useState<string | null>(null);
 
     const handleShowUsers = async () => {
       const token = localStorage.getItem('token');
@@ -32,7 +34,6 @@ const UsersPage: React.FC = () => {
         });
         if (response.status === 200) {
           setUsers(response.data);
-          console.log(response.data);
         } else {
           setError('Failed to fetch users');
         }
@@ -42,17 +43,28 @@ const UsersPage: React.FC = () => {
       }
     };
 
+    useEffect(() => {
+      handleShowUsers();
+    }, []);
+
+      const handleDelete = async (id: string) => {
+      try {
+        const response = await api.delete(`${APIS.DELETE_USER}/${id}`);
+        alert('User deleted successfully');
+        handleShowUsers();
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
   return (
     <div className="container mx-auto p-4">
-      <button onClick={handleShowUsers} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-      Show
-        </button>
       <h1 className="text-2xl font-bold mb-4">Users</h1>
-      <div className="overflow-x-auto">
+      <div className="">
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
           <thead className="bg-gray-100">
             <tr>
-            <th className="py-2 px-4 border-b border-gray-200">ID</th>
+              <th className="py-2 px-4 border-b border-gray-200 ">ID</th>
               <th className="py-2 px-4 border-b border-gray-200">Username</th>
               <th className="py-2 px-4 border-b border-gray-200">Country</th>
               <th className="py-2 px-4 border-b border-gray-200">Email</th>
@@ -63,14 +75,20 @@ const UsersPage: React.FC = () => {
           <tbody>
             {users.map((user) => (
               <tr key={user.id} className="hover:bg-gray-50">
-                <td className="py-2 px-4 border-b border-gray-200">{user.id}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{user.username}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{user.country}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{user.email}</td>
-                <td className="py-2 px-4 border-b border-gray-200">{user.roles}</td>
-                <button>
-                  Click
-                </button>
+                <td className="py-2 px-4 border-b border-gray-200 " >{user.id}</td>
+                <td className="py-2 px-4 border-b border-gray-200 ">{user.username}</td>
+                <td className="py-2 px-4 border-b border-gray-200 ">{user.country}</td>
+                <td className="py-2 px-4 border-b border-gray-200 ">{user.email}</td>
+                <td className="py-2 px-4 border-b border-gray-200 ">{user.roles}</td>
+                <td className=" justify-center py-2 px-4  border-b border-gray-200">
+                <IconContext.Provider value={{ color: "red", className: "" }}>
+
+                  <button onClick={() => handleDelete(user.id)}>
+                    <RiDeleteBin6Line />
+                  </button>
+                  </IconContext.Provider>
+                </td>
+                
               </tr>
             ))}
           </tbody>
