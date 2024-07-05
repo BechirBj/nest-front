@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import api from '../../API/api';
+import {api} from '../../API/api';
 import APIS from '../../API/endPoints';
 import { useNavigate } from 'react-router-dom';
 

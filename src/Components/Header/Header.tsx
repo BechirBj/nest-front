@@ -110,9 +110,9 @@ const Header: React.FC = () => {
               <li>
                 <Link to="/Interfaces" onClick={handleInterfacesClick} className="dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Interfaces</Link>
               </li>
-              <li>
+              {/* <li>
                 <Link to="/UsersPage" onClick={handleUsersClick} className="dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Users</Link>
-              </li>
+              </li> */}
             </ul>
           </div>
         </div>

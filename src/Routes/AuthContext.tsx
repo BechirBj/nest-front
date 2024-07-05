@@ -1,8 +1,8 @@
 // AuthContext.tsx
-import React, { createContext, useContext, useState, ReactNode } from 'react';
+import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 
 interface AuthContextType {
-  isAuthenticated: boolean;
+  isAuthenticated: boolean | undefined ;
   userRole: string | null;
   login: (role: string) => void;
   logout: () => void;
@@ -11,8 +11,25 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
+    localStorage.getItem('token')?true : false,
+  );
   const [userRole, setUserRole] = useState<string | null>(null);
+  const [navigate,setNavigator]=useState('')
+
+ 
+  useEffect(()=>{
+    const token = localStorage.getItem('token');
+    const role= localStorage.getItem('role');
+    if(token){
+      setIsAuthenticated(true);
+      setUserRole(role);
+    }else{
+      setIsAuthenticated(false);
+      setUserRole(null);
+    }
+  },[]);
+
 
   const login = (role: string) => {
     setIsAuthenticated(true);
@@ -22,6 +39,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
   const logout = () => {
     setIsAuthenticated(false);
     setUserRole(null);
+    localStorage.clear();
   };
 
   return (

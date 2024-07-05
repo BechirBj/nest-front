@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import APIS from '../../API/endPoints';
-import api from '../../API/api';
+import {api} from '../../API/api';
 import { useAuth } from '../../Routes/AuthContext';
 
 const LoginSection: React.FC = () => {
@@ -22,8 +22,6 @@ const LoginSection: React.FC = () => {
         localStorage.setItem('token', access_token); 
         localStorage.setItem('sub', sub);
         localStorage.setItem('role', roles);
-        console.log(roles)
-        console.log(sub)
         login(roles);
         navigate(roles === APIS.USER_ROLE ? '/UsersPage' : '/');
       }

@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
-import api from "../API/api";
+import { Private_api} from "../API/api";
 import APIS from "../API/endPoints";
 import { IconContext } from "react-icons";
 import { RiDeleteBin6Line } from "react-icons/ri";
+import { Navigate, useNavigate } from "react-router-dom";
 interface InterMiami {
   id: string;
   title: string;
@@ -13,51 +14,27 @@ interface InterMiami {
   };
 }
 const InterFaces = () => {
+  
   const token = localStorage.getItem("token");
   const roles = localStorage.getItem("role");
+  const navigate = useNavigate(); 
 
   const [users, setUsers] = useState<InterMiami[]>([]);
   const [error, setError] = useState<string | null>();
 
-  // const ShowAllInterface=async()=>{
-  //   const token = localStorage.getItem("token");
-  //   if (!token) {
-  //     setError("No token found");
-  //     return;
-  //   }
-  //   try {
-  //     const response = await api.get(APIS.GET_ALL_INTERFACES, {
-  //       headers: {
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //     });
-  //     if (response.status === 200) {
-  //       setUsers(response.data);
-  //     } else {
-  //       setError("Failed to fetch users");
-  //     }
-  //   } catch (error) {
-  //     setError("Error fetching data");
-  //     console.error("Error fetching data:", error);
-  //   }
-  // }
 
-  const ShowUserInterface = async () => {
-    const sub = localStorage.getItem("sub");
+  if(token===null){
+    navigate("/LoginPage")
+  }
+  
+  const ShowAllInterface=async()=>{
     const token = localStorage.getItem("token");
-
     if (!token) {
       setError("No token found");
       return;
     }
     try {
-      const url = `${APIS.GET_INTERFACE}/${sub}`;
-      const response = await api.get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      const response = await Private_api.get(APIS.GET_ALL_INTERFACES);
       if (response.status === 200) {
         setUsers(response.data);
       } else {
@@ -67,15 +44,12 @@ const InterFaces = () => {
       setError("Error fetching data");
       console.error("Error fetching data:", error);
     }
-  };
+  }
+
+
   
   useEffect(() => {
-      // ShowAllInterface();
-    // if(roles==APIS.USER_ROLE){
-    // }
-    // else{
-      ShowUserInterface();
-    // }
+      ShowAllInterface();
   });
 
 
@@ -97,14 +71,10 @@ const DeleteInterface = async (id: string) => {
       return;
     }
     try {
-      const response = await api.delete(`${APIS.DELETE_INTERFACE}/${id}`, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
+      const response = await Private_api.delete(`${APIS.DELETE_INTERFACE}/${id}`);
       if (response.status === 200) {
-        alert("User deleted successfully");
-        ShowUserInterface();
+        alert("Interface deleted successfully");
+        ShowAllInterface();
       }
     } catch (error) {
       console.error(error);
@@ -112,15 +82,6 @@ const DeleteInterface = async (id: string) => {
   };
   return (
     <div className="container mx-auto p-4">
-      {/* <div className='flex gap-9'>
-            <button onClick={handleInterface}className="bg-transparent hover:bg-blue-500 text-custom-gray font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded"
-            >
-            Show
-            </button>
-            <button onClick={handleShowInterfaces} className="bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 border border-blue-500 hover:border-transparent rounded">
-            Show All
-            </button>
-        </div> */}
       <h1 className="text-2xl font-bold mb-4">Users</h1>
       <div className="overflow-x-auto">
         <table className="min-w-full bg-white shadow-md rounded-lg overflow-hidden">
@@ -160,7 +121,7 @@ const DeleteInterface = async (id: string) => {
                       <RiDeleteBin6Line />
                     </button>
                   </IconContext.Provider>
-                </td>{" "}
+                </td>
               </tr>
             ))}
           </tbody>

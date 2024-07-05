@@ -1,8 +1,11 @@
-import React, { useState } from 'react'
-import api from '../../API/api';
+import  { useState } from 'react'
 import APIS from '../../API/endPoints';
+import { useNavigate } from 'react-router-dom';
+import { Private_api } from '../../API/api';
 
 const HomeSection = () => {
+  const navigate = useNavigate();
+
     function test(): void {
         const jsonInput = (document.getElementById('json-input') as HTMLInputElement).value;
         try {
@@ -96,13 +99,11 @@ const HomeSection = () => {
           content: content,
       };  
       try {
-          const response = await api.post(APIS.CREATE_INTERFACE, form, {
-              headers: {
-                  Authorization: `Bearer ${token}`,
-              },
-          });
+          const response = await Private_api.post(APIS.CREATE_INTERFACE, form);
           if (response.status === 201) { 
+            alert("Interface saved successfuly ")
               setData(response.data);
+              navigate('/Interfaces')
           } else {
               setError('Failed to create interface');
           }

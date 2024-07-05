@@ -10,7 +10,7 @@ interface ProtectedRouteProps {
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children, roles }) => {
   const { isAuthenticated, userRole } = useAuth();
-  return isAuthenticated && userRole === roles ? children : <Navigate to="/LoginPage" />;
+  return isAuthenticated && roles.includes(userRole|| '')? children : <Navigate to="/" />;
 };
 
 export default ProtectedRoute;

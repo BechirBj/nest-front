@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import api from '../../API/api';
+import { api, Private_api } from '../../API/api';
 import APIS from '../../API/endPoints';
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { IconContext } from 'react-icons';
@@ -27,11 +27,7 @@ const UsersPage: React.FC = () => {
       }
   
       try {
-        const response = await api.get(APIS.GET_ALL_USERS, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const response = await Private_api.get(APIS.GET_ALL_USERS);
         if (response.status === 200) {
           setUsers(response.data);
         } else {
