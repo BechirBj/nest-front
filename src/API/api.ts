@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 const api = axios.create({
   baseURL: 'http://localhost:3001', 
@@ -25,7 +26,7 @@ Private_api.interceptors.response.use(
       window.location.href = '/LoginPage';
     }
     if( error.response.status==403 ){
-      alert('Access Denied');
+      toast.error("Access Denied")
       window.location.href = '/';
     }
     return Promise.reject(error);

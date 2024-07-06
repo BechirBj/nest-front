@@ -3,6 +3,7 @@ import { api, Private_api } from '../../API/api';
 import APIS from '../../API/endPoints';
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { IconContext } from 'react-icons';
+import { toast } from 'react-toastify';
 
 
 interface User {
@@ -46,7 +47,7 @@ const UsersPage: React.FC = () => {
       const handleDelete = async (id: string) => {
       try {
         const response = await api.delete(`${APIS.DELETE_USER}/${id}`);
-        alert('User deleted successfully');
+        toast.success("User Deleted successfully");
         handleShowUsers();
       } catch (error) {
         console.error(error);

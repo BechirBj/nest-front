@@ -3,6 +3,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import logo from './logo.png';
 import { useAuth } from '../../Routes/AuthContext';
 import APIS from '../../API/endPoints';
+import { toast } from 'react-toastify';
 
 const Header: React.FC = () => {
   const { isAuthenticated, userRole, logout } = useAuth();
@@ -12,32 +13,13 @@ const Header: React.FC = () => {
     logout(); 
     navigate('/LoginPage');
   };
-  const handleUsersClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    event.preventDefault();
-    const token = localStorage.getItem('token');
-    const roles = localStorage.getItem('roles');
-    if (token && roles) {
-      try {
-        const parsedRoles = JSON.parse(roles);
-        if (parsedRoles.includes(APIS.USER_ROLE)) {
-          navigate('/UsersPage');
-        } else {
-          alert('Access Denied: You do not have permission to view this page.');
-        }
-      } catch (error) {
-        console.error('Error parsing roles from localStorage:', error);
-      }
-    } else {
-      navigate('/LoginPage');
-    }
-  };
+
   const handleInterfacesClick = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
     event.preventDefault();
-    
     if (isAuthenticated) {
       navigate('/Interfaces');
     } else {
-      alert('Access Denied: You need to login to view this page.');
+      toast.error("Access Denied: You need to login to view this page");
       navigate('/LoginPage');
     }
   };
@@ -110,9 +92,7 @@ const Header: React.FC = () => {
               <li>
                 <Link to="/Interfaces" onClick={handleInterfacesClick} className="dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Interfaces</Link>
               </li>
-              {/* <li>
-                <Link to="/UsersPage" onClick={handleUsersClick} className="dark:text-gray-400 lg:dark:hover:text-white dark:hover:bg-gray-700 dark:hover:text-white lg:dark:hover:bg-transparent dark:border-gray-700">Users</Link>
-              </li> */}
+
             </ul>
           </div>
         </div>

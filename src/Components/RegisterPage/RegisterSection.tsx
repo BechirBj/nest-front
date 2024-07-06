@@ -2,8 +2,11 @@ import React, { useState } from 'react'
 import {api} from '../../API/api';
 import APIS from '../../API/endPoints';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { AxiosError } from 'axios';
 
 const RegisterSection = () => {
+  
     const [username,setUsername]= useState('')
     const [email,setEmail]= useState('')
     const [country,setCountry]= useState('')
@@ -25,12 +28,31 @@ const RegisterSection = () => {
         await api.post(APIS.REGISTER, form).then((response) => {
           if (response.status === 201) { 
             setData(response.data);
+            toast.success("Registration successful");
+
             navigate('/LoginPage'); 
           } else {
+            toast.error("Registration failed"); 
+
           }
         });
       } catch (error) {
-        console.error("Error fetching data:", error);
+        if (error instanceof AxiosError) { 
+          if (error.response) {
+            const { data } = error.response;
+            if (error.response.status === 400 && data.message) {
+              toast.error(data.message.join('\n'));
+            } else {
+              toast.error("Registration failed");
+            }
+          } else if (error.request) {
+            console.error("No response received:", error.request);
+            toast.error("Error occurred while registering");
+          } else {
+            console.error("Error fetching data:", error.message);
+            toast.error("Error occurred while registering");
+          }
+        }
       }
     };
     

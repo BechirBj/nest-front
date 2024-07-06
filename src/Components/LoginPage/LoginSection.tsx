@@ -3,6 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import APIS from '../../API/endPoints';
 import {api} from '../../API/api';
 import { useAuth } from '../../Routes/AuthContext';
+import { AxiosError } from 'axios';
+import { toast } from 'react-toastify';
 
 const LoginSection: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -26,7 +28,22 @@ const LoginSection: React.FC = () => {
         navigate(roles === APIS.USER_ROLE ? '/UsersPage' : '/');
       }
     } catch (error) {
-      console.error('Error during login:', error);
+      if (error instanceof AxiosError) { 
+        if (error.response) {
+          const { data } = error.response;
+          if (error.response.status === 401 && data.message) {
+            toast.error(data.message);
+          } else {
+            toast.error("Registration failed");
+          }
+        } else if (error.request) {
+          console.error("No response received:", error.request);
+          toast.error("Error occurred while registering");
+        } else {
+          console.error("Error fetching data:", error.message);
+          toast.error("Error occurred while registering");
+        }
+      }    
     }
   };
 

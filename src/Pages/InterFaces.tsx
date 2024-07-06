@@ -4,6 +4,7 @@ import APIS from "../API/endPoints";
 import { IconContext } from "react-icons";
 import { RiDeleteBin6Line } from "react-icons/ri";
 import { Navigate, useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 interface InterMiami {
   id: string;
   title: string;
@@ -73,7 +74,7 @@ const DeleteInterface = async (id: string) => {
     try {
       const response = await Private_api.delete(`${APIS.DELETE_INTERFACE}/${id}`);
       if (response.status === 200) {
-        alert("Interface deleted successfully");
+        toast.success("Interface Deleted successfully")
         ShowAllInterface();
       }
     } catch (error) {

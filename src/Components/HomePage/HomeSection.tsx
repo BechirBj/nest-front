@@ -2,6 +2,8 @@ import  { useState } from 'react'
 import APIS from '../../API/endPoints';
 import { useNavigate } from 'react-router-dom';
 import { Private_api } from '../../API/api';
+import { toast } from 'react-toastify';
+import { wait } from '@testing-library/user-event/dist/utils';
 
 const HomeSection = () => {
   const navigate = useNavigate();
@@ -16,8 +18,7 @@ const HomeSection = () => {
           setContent(typescriptOutput); 
           (document.getElementById('typescript-output') as HTMLInputElement).value = typescriptOutput;
         } catch (error) {
-          console.error('Error parsing JSON:', error);
-          (document.getElementById('typescript-output') as HTMLInputElement).value = 'Error parsing JSON. Please check the input.';
+          toast.error("Error parsing JSON. Please check the input.")
         }
     }
       
@@ -88,10 +89,9 @@ const HomeSection = () => {
 
 
     const Save = async (event: { preventDefault: () => void }) => {
-      const token = localStorage.getItem('token');
-      if (!token) {
-          setError('No token found');
-          return;
+
+      if (!title){
+        toast.error("Please insert  a title .")
       }
       event.preventDefault();
       const form = {
@@ -101,22 +101,25 @@ const HomeSection = () => {
       try {
           const response = await Private_api.post(APIS.CREATE_INTERFACE, form);
           if (response.status === 201) { 
-            alert("Interface saved successfuly ")
-              setData(response.data);
-              navigate('/Interfaces')
+            toast.success("Interface Created successfully");
+            setData(response.data);
+            navigate('/Interfaces');
           } else {
-              setError('Failed to create interface');
+            setError('Failed to create interface');
           }
       } catch (error) {
+        toast.error("Failed to create interface");
         console.error("Error fetching data:", error);
       }
   };
       return (
-        <div className="h-full font-poppins bg-gradient-to-r from-purple-700 to-indigo-900 text-white ">
+        <div className="h-full font-poppins bg-gradient-to-r from-gray-700 to-gray-600 text-white ">
+          
             <div className='flex justify-center pt-16'>         
             <input
             onChange={(e)=>setTitle(e.target.value)}
                 type="text"
+                required
                 placeholder="Enter Interface Title"
                 className=" w-50 h-50 text-center px-3 py-2 mb-4  rounded-md  text-black "
             />
@@ -163,13 +166,13 @@ const HomeSection = () => {
           <div className='flex  justify-between'>
             <button
               onClick={test}
-              className="m-10 py-3 px-7 text-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white border-none rounded-lg cursor-pointer transform transition-transform duration-300 ease hover:translate-y-[-3px] shadow-md"
+              className="m-10 py-3 px-7 text-lg bg-gradient-to-r from-gray-700  to-gray-600 text-white border-none rounded-lg cursor-pointer transform transition-transform duration-300 ease hover:translate-y-[-3px] shadow-md"
               >
               Convert JSON to TypeScript
             </button>
             <button
               onClick={Save}
-              className="m-10 py-3 px-7 text-lg bg-gradient-to-r from-purple-400 to-purple-600 text-white border-none rounded-lg cursor-pointer transform transition-transform duration-300 ease hover:translate-y-[-3px] shadow-md"
+              className="m-10 py-3 px-7 text-lg bg-gradient-to-r from-gray-800  to-gray-700 text-white border-none rounded-lg cursor-pointer transform transition-transform duration-300 ease hover:translate-y-[-3px] shadow-md"
               >
               Save
             </button>
