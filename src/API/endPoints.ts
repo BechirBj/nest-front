@@ -8,5 +8,6 @@ const APIS = {
     GET_INTERFACE:'interfaces',
     CREATE_INTERFACE:'interfaces',
     DELETE_INTERFACE:'interfaces',
+    CHANGE_INTERFACE:'interfaces',
 }
 export default APIS;
